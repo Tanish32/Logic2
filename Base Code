@@ -33,7 +33,27 @@ int main()
         // Change this code to check for different rules
         if (tokens[1] == "MT")
         {
-            cout << "run MT checker" << endl;
+            cout << "run MT code" << endl;
+        }
+        else if (tokens[1] == "P")
+        {
+            cout << "run Primise code" << endl;
+        }
+        else if (tokens[1] == "*i")
+        {
+            cout << "run and introduction code" << endl;
+        }
+        else if (tokens[1] == "*e")
+        {
+            cout << "run and elimination code" << endl;
+        }
+        else if (tokens[1] == "+i")
+        {
+            cout << "run or introduction code" << endl;
+        }
+        else if (tokens[1] == ">e")
+        {
+            cout << "run > elim code" << endl;
         }
         i++;
     }
