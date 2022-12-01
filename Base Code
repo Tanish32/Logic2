@@ -1,0 +1,42 @@
+#include <iostream>
+using namespace std;
+#include <string.h>
+
+void tokenizer(char *p, string str, string *tokens)
+{
+    int i = 0;
+    p = strtok(&str[0], " /");
+    while (p != NULL)
+    {
+        tokens[i] = p;
+        p = strtok(NULL, " /");
+        i++;
+    }
+}
+
+int main()
+{
+    // Initialization
+    int length, i = 0;
+    char *p;
+    cin >> length;
+    string *tokens = new string[4];
+    string *arr = new string[length + 1];
+    // To take input of "length" number of lines and store in string array arr
+
+    while (i < (length + 1))
+    {
+        getline(cin, arr[i]);
+        string str = arr[i];
+        // Tokenizes str into 4 parts...delims are " "and "/"
+        tokenizer(p, str, tokens);
+        // Change this code to check for different rules
+        if (tokens[1] == "MT")
+        {
+            cout << "run MT checker" << endl;
+        }
+        i++;
+    }
+
+    return 0;
+}
