@@ -1,7 +1,6 @@
 #include<iostream>
 using namespace std;
 #include<string.h>
-#include<time.h>
 
 /*  P - PREMISE
     * - AND
@@ -13,6 +12,12 @@ using namespace std;
     MT - MODUS TOLLENS
 */
 
+/**
+ * @brief Function to divide input line into 4 parts Proof Line, Proof Line, Line 1,Line 2
+ * @param s string to be divided
+ * @param delim Delimiter
+ * @return string* returns string array
+ */
 string * divide(string s,char delim){
     string *arr = new string[5];
     int part=0;
@@ -40,27 +45,32 @@ string * divide(string s,char delim){
     return arr;
 }
 
+/// Custom class to map each line 
 class map{
     public:
         int lineno;
         string pl,rule,l1,l2;
         map(int i,string a){
-            lineno=i;
+            /// @brief Sets Line No,proof line,proof rule
+            /// @param i Line no
+            /// @param a proof input line
+
+            lineno=i; //Sets Line No
             string *p = divide(a,'/');
-            pl=p[0];
-            rule=p[1];
-            l1=p[2];l2=p[3];
+            pl=p[0]; // Sets proof line
+            rule=p[1]; // Sets proof rule
+            l1=p[2];l2=p[3]; // Stores line nos used for proof line
         }
 };
+/// Custom Stack class 
 class stack{
-        
-    /// Custom Stack class 
     public:
         int top,size;
         char *arr=NULL;
-        // Constructor
+        /// @brief Constructor
+        /// @param cap cap- max capacity of stack
         stack(int cap){
-            size = cap;/// cap- max capacity of stack
+            size = cap; 
             top=-1;
             arr =new char[size];
         }
@@ -112,6 +122,13 @@ class stack{
             else{return '\0';}
         }
 };
+/**
+ * @brief  Divide the proof line into 2 parts operand before operator and operand after operator
+ * @param ptr 
+ * @param str 
+ * @param delim Delimiter
+ * @return string* 
+ */
 string *getElements(stack *ptr,string str,char delim){
     string *arr = new string[2];
     string a1,a2;
@@ -140,18 +157,10 @@ string *getElements(stack *ptr,string str,char delim){
     arr[1]=a2;
     return arr;
 }
-int index(char c,string s){ 
-        for(int i=0;i<s.length();i++){
-            if (s[i]==c){
-                return i;
-            }
-        }
-        return -1;
-}
 
 int main(){
     cout<<"Enter no of lines in proof"<<endl;
-    int n;
+    int n; 
     map *maparr[100];
     cin>>n;
     cout<<"Enter proof"<<endl;
@@ -159,17 +168,21 @@ int main(){
         string p;
         cout<<i+1<<" ";
         cin>>p;
-        map *m = new map(i+1,p);
-        maparr[i]=m;
+        /// @brief Creating a map pointer & an array of map type objects
+        /// @return 
+        map *m = new map(i+1,p); // Creating a map pointer
+        maparr[i]=m; // Creating an array of map type objects
     }
     stack *st = new stack(100);
-
     for (int i=0;i<n;i++){
-        // PREMISE
+         /// @brief PREMISE
+         /// @return 
         if(((maparr[i]->rule).compare("P"))==0){
             continue;
         }
-        // AND INTRODUCTION
+         /// @brief AND INTRODUCTION
+         /// @return 
+         
         else if(((maparr[i]->rule).compare("*i"))==0){
             string *m = getElements(st,maparr[i]->pl,'*');
             int line1=stoi(maparr[i]->l1);
@@ -179,7 +192,8 @@ int main(){
                 return 0;
             }
         }
-        // OR INTRODUCTION
+        /// @brief OR INTRODUCTION
+        /// @return 
         else if((((maparr[i]->rule).compare("+i1"))==0) || (((maparr[i]->rule).compare("+i2"))==0)){
             string *m = getElements(st,maparr[i]->pl,'+');
             int line1=stoi(maparr[i]->l1);
@@ -196,7 +210,8 @@ int main(){
                 }
             }
         }
-        // AND ELIMINATION
+        /// @brief AND ELIMINATION
+        /// @return 
         else if(((maparr[i]->rule).compare("*e1")==0)){
             int line1=stoi(maparr[i]->l1);
             string *m = getElements(st,maparr[line1-1]->pl,'*');
@@ -213,7 +228,8 @@ int main(){
                 return 0;
             }
         }
-        // IMPLICATION ELIMINATION
+        /// @brief IMPLICATION ELIMINATION
+        /// @return  
         else if(((maparr[i]->rule).compare(">e")==0)){
             int line1=stoi(maparr[i]->l1);
             int line2=stoi(maparr[i]->l2);
@@ -224,7 +240,8 @@ int main(){
                 return 0;
             }
         }
-        // MODUS TOLLENS
+        /// @brief MODUS TOLLENS
+        /// @return  
         else if(((maparr[i]->rule).compare("MT")==0)){
             int line1=stoi(maparr[i]->l1);
             int line2=stoi(maparr[i]->l2);
